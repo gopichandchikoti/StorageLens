@@ -1,5 +1,6 @@
 """Run the shipped helper on isolated metadata fixtures, without shell cleanup."""
 import json
+import ctypes
 import os
 from pathlib import Path
 import secrets
@@ -43,17 +44,36 @@ def main():
         token=request('/api/summary')['token']
         records=[]
         for mode in ['quick','deep']:
+            previous=request('/api/summary')['scan']
+            previous_id=previous['id'] if previous else 0
             assert request('/api/scan',{'mode':mode,'roots':[str(fixture)]})['started']
             deadline=time.monotonic()+240
             while time.monotonic()<deadline:
                 progress=request('/api/progress')
-                if progress['status'] in ['complete','failed','cancelled']:break
+                if progress['status'] in ['failed','cancelled']:break
+                completed=request('/api/summary')['scan']
+                if (progress['status']=='complete' and completed and
+                        completed['id']>previous_id and completed['mode']==mode):break
                 time.sleep(.25)
             assert progress['status']=='complete',progress.get('error',progress['status'])
-            record=request('/api/folders?'+urllib.parse.urlencode({'path':str(fixture)}))['node']
+            assert completed and completed['id']>previous_id and completed['mode']==mode
+            folder=request('/api/folders?'+urllib.parse.urlencode({'path':str(fixture)}))
+            assert folder['snapshot']['id']==completed['id']
+            record=folder['node']
             assert record['logical']==32768
             records.append({'mode':mode,'logical':record['logical'],'allocated':record['allocated']})
-        assert records[1]['allocated']<records[1]['logical']
+        # Cluster sizes vary by filesystem. Compare real native allocations for
+        # the two unique files, rather than assuming allocation is below EOF.
+        kernel=ctypes.WinDLL('kernel32',use_last_error=True)
+        kernel.GetCompressedFileSizeW.argtypes=[ctypes.c_wchar_p,ctypes.POINTER(ctypes.c_ulong)]
+        kernel.GetCompressedFileSizeW.restype=ctypes.c_ulong
+        expected=0
+        for path in [fixture/'one.bin',nested/'two.bin']:
+            high=ctypes.c_ulong();ctypes.set_last_error(0)
+            low=kernel.GetCompressedFileSizeW(str(path),ctypes.byref(high))
+            assert low!=0xffffffff or ctypes.get_last_error()==0
+            expected+=(high.value<<32)|low
+        assert records[1]['allocated']==expected,{'scans':records,'uniqueAllocation':expected}
         assert isinstance(request('/api/apps'),list)
         report={'sessionRequired':True,'packagedScanModes':records,'applicationInventory':True,'passed':True}
         dest=ROOT/'artifacts/verification';dest.mkdir(parents=True,exist_ok=True)

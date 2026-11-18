@@ -377,3 +377,14 @@ its existing onedir distribution. The unpacked host started locally and rendered
 the scanner, apps, security, move and Home views; final local/hosted validation is
 recorded separately. This packaging change is not a malware-free certification or
 a general antivirus compatibility guarantee.
+
+The unpacked local verification subsequently passed: maximized first launch,
+apps/security/move/Home screens, 850-DIP native width, WebView viewport shrinking
+from 3,440 to 834 CSS pixels and no horizontal overflow. The resize check now tests
+native width and an actually smaller web viewport instead of assuming a fixed CSS
+width maps exactly to WPF display units. Its local receipt is
+`artifacts/verification/unpacked-preview-scaled/verified.json`. The hosted unpacked
+Windows build also passed (run `44244221802`). Final release identity and run evidence
+are available in the rolling release's public `manifest.json` and `BUILD-NOTES.md`;
+checksummed public bytes are rechecked after publication. The GitHub preview APK's
+1.1.0/10100 identity, API 30 minimum/API 36 target and dedicated signer were verified.

@@ -1,5 +1,7 @@
 # StorageLens
 
+[![Build and publish previews](https://github.com/gopichandchikoti/StorageLens/actions/workflows/preview.yml/badge.svg?branch=main)](https://github.com/gopichandchikoti/StorageLens/actions/workflows/preview.yml)
+
 A local storage inspector for Windows and Android, preserving the charcoal dashboard and Watermelon-inspired Home design. **No Vercel deployment or cloud account is needed.** A website hosted on Vercel cannot directly inspect an entire PC: the Windows helper or installed native app performs that work locally.
 
 This is a functional **1.1.0 preview**, with permission and measurement limits. It is not an antivirus, and app associations are not exact uninstall savings.

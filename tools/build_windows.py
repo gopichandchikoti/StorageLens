@@ -23,8 +23,14 @@ def main():
            'DOTNET_NOLOGO':'1', 'DOTNET_SKIP_FIRST_TIME_EXPERIENCE':'1'}
     project = ROOT/'Windows'/'StorageLens'/'StorageLens.csproj'
     publish = ARTIFACTS/'publish'
+    # This directory contains generated program files only. A clean publish
+    # prevents stale bundled executables or runtime files reaching the installer.
+    if publish.exists():
+        if publish.is_symlink() or not publish.resolve().is_relative_to(ARTIFACTS.resolve()):
+            raise ValueError('Unexpected Windows publish directory')
+        shutil.rmtree(publish)
     run([dotnet, 'publish', project, '-c', 'Release', '-r', 'win-x64', '--self-contained', 'true',
-         '-p:PublishSingleFile=true', '-p:IncludeNativeLibrariesForSelfExtract=true',
+         '-p:PublishSingleFile=false',
          '-p:RestoreLockedMode=true',
          '-p:Version='+product['version'], '-o', publish], env=env)
     source = ROOT/'Web'

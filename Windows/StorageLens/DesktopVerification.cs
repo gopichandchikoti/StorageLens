@@ -51,7 +51,11 @@ internal static class DesktopVerification
         await WaitAsync(core, "!!document.querySelector('.cap-home-hero')");
         await CaptureAsync(core, directory, "home.png");
         window.WindowState = WindowState.Normal;
+        // Let WPF finish restoring native bounds before applying the smaller size.
+        await window.Dispatcher.InvokeAsync(() => window.UpdateLayout(),
+            System.Windows.Threading.DispatcherPriority.ApplicationIdle);
         window.Width = 850; window.Height = 680;
+        window.UpdateLayout();
         await WaitAsync(core, "innerWidth < 900");
         var overflow = await core.ExecuteScriptAsync("document.documentElement.scrollWidth > innerWidth+1");
         if (overflow == "true") throw new InvalidDataException("Narrow window has horizontal overflow.");

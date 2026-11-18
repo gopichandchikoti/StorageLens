@@ -364,3 +364,16 @@ The adapter now explicitly refuses any existing destination directory entry with
 additional existing-file preservation check covers the guard locally. Concurrent
 same-account filesystem attacks remain outside the isolation boundary described
 above; the correction does not claim atomic snapshot semantics.
+
+The first full hosted preview passed at commit `76547ce` (run `44242703452`).
+Public EXE/APK bytes were downloaded and matched their published SHA-256 digests;
+the APK signer and application/version/SDK identity matched the manifest. On this
+PC, Surfshark then quarantined the unsigned bundled .NET host and local Windows
+CreateProcess returned error 1450. Antivirus logs confirmed the specific quarantine;
+no protection was disabled and no quarantined file was restored. The Windows host
+now uses standard unpacked self-contained .NET publishing, with the runtime/DLLs
+inside the installer instead of a self-extracting host. The Python helper remains
+its existing onedir distribution. The unpacked host started locally and rendered
+the scanner, apps, security, move and Home views; final local/hosted validation is
+recorded separately. This packaging change is not a malware-free certification or
+a general antivirus compatibility guarantee.

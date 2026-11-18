@@ -17,6 +17,12 @@ These fixed links point to the latest **verified rolling preview**, built from `
 
 **Windows:** run `StorageLens-Setup.exe`, then open StorageLens from Start. The installer is per-user, includes Python/.NET, and needs Microsoft Edge WebView2 Runtime. It is **unsigned**. Close StorageLens before updating; your scan data is retained. Uninstall through Windows Settings > Apps.
 
+The Windows host uses standard unpacked .NET program files inside the installer.
+An earlier bundled preview was quarantined by Surfshark on the development PC;
+the packaging correction keeps runtime files inspectable. Antivirus compatibility
+is not guaranteed. Keep protection enabled and report unexpected detections to
+the antivirus vendor rather than assuming a download is safe because CI passed.
+
 **Android:** transfer `StorageLens-Android.apk` to your phone and install it. Open **Access & limits** to choose Usage access and shared-storage grants. Published previews use a dedicated persistent **preview certificate** and are debuggable; they are not Play Store/production releases. If you installed an earlier local Android Debug-signed APK, Android requires uninstalling it before this different signer can be installed; uninstalling removes its phone-local scan records. Subsequent GitHub previews retain the same signer and package ID.
 
 To verify a Windows download: `Get-FileHash .\StorageLens-Setup.exe -Algorithm SHA256`, then compare the result with `SHA256SUMS.txt`. APK certificate fingerprints and both package digests are also in [manifest.json](https://github.com/gopichandchikoti/StorageLens/releases/download/latest-build/manifest.json).

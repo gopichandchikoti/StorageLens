@@ -50,6 +50,10 @@ def streams(path):
 def copy(source, destination, report, cancelled):
     """CopyFileEx preserves streams/attributes; STOP retains an incomplete copy."""
     if not K: raise OSError('Windows is required')
+    # Windows can follow a dangling destination reparse point despite the copy
+    # flags on some builds. lexists rejects the directory entry itself before
+    # calling the native API, including links whose target does not exist.
+    if os.path.lexists(destination):raise FileExistsError(str(destination))
     callback_errors=[]
     @CALLBACK
     def progress(total, transferred, stream_size, stream_done, stream_number, reason, src, dst, data):

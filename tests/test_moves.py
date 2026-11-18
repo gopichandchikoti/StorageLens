@@ -156,4 +156,11 @@ class MoveTests(unittest.TestCase):
             native_files.copy(self.source/'song.txt',link,lambda n:None,threading.Event())
         self.assertFalse(escape.exists())
 
+    def test_native_copy_does_not_replace_existing_destination(self):
+        destination=self.destination/'already-here.txt'
+        destination.write_bytes(b'Keep existing destination')
+        with self.assertRaises(FileExistsError):
+            native_files.copy(self.source/'song.txt',destination,lambda n:None,threading.Event())
+        self.assertEqual(destination.read_bytes(),b'Keep existing destination')
+
 if __name__=='__main__':unittest.main()

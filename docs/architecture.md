@@ -356,3 +356,11 @@ checksums must be compared before installation.
 
 Publication execution evidence is added after the hosted run and public-byte checks;
 configuration and local validation alone are not recorded as hosted success.
+
+The first hosted Windows run exercised the previously skipped dangling-destination
+link regression and found CopyFileEx did not reject it on that Windows build.
+The adapter now explicitly refuses any existing destination directory entry with
+`lexists` before the native call. The original regression remains enabled and an
+additional existing-file preservation check covers the guard locally. Concurrent
+same-account filesystem attacks remain outside the isolation boundary described
+above; the correction does not claim atomic snapshot semantics.

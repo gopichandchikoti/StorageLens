@@ -1,0 +1,7 @@
+{
+  "name": "StorageLens",
+  "version": "1.1.0",
+  "channel": "preview",
+  "androidVersionCode": 10100,
+  "androidApplicationId": "com.portfolio.storagelens"
+}

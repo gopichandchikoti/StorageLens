@@ -1,0 +1,50 @@
+# Private, device-specific scan data and application registrations
+/.data/
+/inventory.json
+
+# Local location notes contain this device's absolute paths
+
+# Python-generated files
+__pycache__/
+*.py[cod]
+
+# Local environments and editor state
+.venv/
+venv/
+.vscode/
+.idea/
+.env
+.env.*
+!.env.example
+
+# Windows Explorer metadata
+Thumbs.db
+Desktop.ini
+
+# Native build outputs and local tooling
+/work/
+/artifacts/
+/downloads/
+**/bin/
+**/obj/
+**/build/
+**/.gradle/
+**/local.properties
+**/keystore.properties
+*.jks
+*.keystore
+*.p12
+*.pfx
+/.tools/
+node_modules/
+
+# Generated from the one authoritative public content model at build time
+/Web/public/storagelens.model.json
+/Web/product.json
+/Web/content-fallback.js
+/Android/app/src/main/assets/public/storagelens.model.json
+/Android/app/src/main/assets/product.json
+/Android/app/src/main/assets/content-fallback.js
+/Android/app/src/main/res/values/generated_content.xml
+/Android/app/src/main/assets/THIRD_PARTY_NOTICES.md
+/Android/app/src/main/assets/licenses/

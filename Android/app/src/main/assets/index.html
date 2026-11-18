@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+ <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+ <meta name="color-scheme" content="dark">
+ <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-src 'none'">
+ <title>StorageLens</title><link rel="stylesheet" href="mobile.css">
+ <script defer src="content-fallback.js"></script><script defer src="native.js"></script><script defer src="mobile.js"></script>
+</head>
+<body>
+ <header class="app-header"><div class="wordmark"><span class="logo" aria-hidden="true">▤</span><strong>StorageLens</strong></div><button id="refresh" class="icon-button" aria-label="Refresh">↻</button></header>
+ <div id="status" role="status" aria-live="polite"></div>
+ <main id="screen" tabindex="-1"></main>
+ <nav id="navigation" aria-label="Main navigation"></nav>
+ <dialog id="details" aria-labelledby="detail-title"><div id="detail-content"></div></dialog>
+ <dialog id="scan-dialog" aria-labelledby="scan-title"><div id="scan-content"></div></dialog>
+ <div id="toast" role="status" hidden></div>
+</body>
+</html>
